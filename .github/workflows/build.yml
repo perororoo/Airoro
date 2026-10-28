@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-26.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Cargo is already installed on ubuntu-26.04:
+      # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2604-Readme.md#rust-tools
+      - name: Build
+        run: cargo build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: airoro-ubuntu
+          if-no-files-found: error
+          path: ./target/debug/Airoro
