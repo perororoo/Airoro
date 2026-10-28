@@ -1,7 +1,19 @@
 use std::sync::Arc;
-
+use serenity::builder::{CreateCommand, CreateCommandOption};
+use serenity::model::application::{CommandOptionType};
 use serenity::all::{CommandInteraction, CreateInteractionResponse, CreateInteractionResponseMessage};
 use serenity::gateway::client::Context;
+
+pub async fn get_command_info<'a>() -> CreateCommand<'a> {
+  let command = CreateCommand::new("team_sheet_search")
+    .description("Shortcut for looking up team sheet templates for tournaments !! (RussianVaxei Template)")
+    .add_option(
+      CreateCommandOption::new(CommandOptionType::Integer, "team_size", "how many team members do you have? :D (1-16)")
+        .required(true),
+  );
+
+  return command;
+}
 
 pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) { 
   let template_sheet_links: Arc<[&str]> = Arc::new([
