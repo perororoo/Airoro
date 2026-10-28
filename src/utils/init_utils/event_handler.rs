@@ -40,14 +40,9 @@ impl EventHandler for Handler {
           println!("[{}] [EVENT_HANDLER]: Failed to clear global commands: {why:?}", get_time());
         }
         
-        let sheet_command: CreateCommand = CreateCommand::new("team_sheet_search")
-          .description("Shortcut for looking up team sheet templates for tournaments !! (RussianVaxei Template)")
-          .add_option(
-            CreateOption::new(CommandOptionType::Integer, "team_size", "how many team members do you have? :D (1-16)")
-              .required(true),
-        );
+        
 
-        let _ = Command::create_global_command(&ctx.http, sheet_command).await;
+        // let _ = Command::create_global_command(&ctx.http, sheet_command).await;
       }
 
       FullEvent::InteractionCreate { 
