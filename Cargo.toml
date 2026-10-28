@@ -15,4 +15,4 @@ openssl-sys = { version="0.9.117", features = ["vendored"] }
 [dependencies.serenity]
 git = "https://github.com/serenity-rs/serenity"
 branch = "next"
-features = ["gateway", "model", "native_tls_backend"]
+features = ["gateway", "model", "native_tls_backend", "builder"]
