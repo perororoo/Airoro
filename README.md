@@ -11,7 +11,13 @@ Discord bot built on `serenity-next` and uhhhhhhhh I forgot...
 
 ## Building
 
-`cargo build` works but see [termux-cross-compile.md](./termux-cross-compile.md) if you want to compile for Termux (from a Windows environment)
+### Cross-compiling for Termux
+
+See [termux-cross-compile.md](./termux-cross-compile.md) if you want to compile for Termux (from a Windows environment).
+
+### Building within Termux
+
+This takes a lot less time and effort than cross-compiling, but does require ~2 GB of storage on your Android device. Make sure you have Cargo installed by running `pkg install rust`, then simply run `cargo build`.
 
 ## Random Stuff
 
