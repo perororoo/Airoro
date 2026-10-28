@@ -1,13 +1,14 @@
 
 use serenity::async_trait;
 use serenity::gateway::client::EventHandler;
-use serenity::builder::{CreateCommand, CreateCommandOption as CreateOption};
-use serenity::model::application::{Command, CommandOptionType};
+use serenity::model::application::{Command};
 use serenity::gateway::client::Context;
 use serenity::model::event::FullEvent;
 use crate::msg_events::*;
 use crate::msg_commands::*;
 use crate::time::get_time;
+use crate::command_registration::check_existing_global_commands;
+use crate::utils::init_utils::command_registration::delete_global_commands;
 
 pub struct Handler;
 
@@ -34,15 +35,10 @@ impl EventHandler for Handler {
       FullEvent::Ready { 
         data_about_bot, .. 
       } => {
-        println!("[{}] [EVENT_HANDLER]: {} is ready !!", get_time(), data_about_bot.user.name);
-
-        if let Err(why) = Command::set_global_commands(&ctx.http, &[]).await {
-          println!("[{}] [EVENT_HANDLER]: Failed to clear global commands: {why:?}", get_time());
-        }
-        
-        
-
-        // let _ = Command::create_global_command(&ctx.http, sheet_command).await;
+        println!("[{}] [EVENT_HANDLER::READY]: {} is ready !!", get_time(), data_about_bot.user.name);
+        println!("[{}] [EVENT_HANDLER::READY]: Checking existing commands...", get_time());
+        check_existing_global_commands(&ctx).await;
+        println!("[{}] [EVENT_HANDLER::READY]: Checking Successful!!", get_time());
       }
 
       FullEvent::InteractionCreate { 
@@ -51,6 +47,7 @@ impl EventHandler for Handler {
         if let Some(interaction) = interaction.as_command() {
           match interaction.data.name.as_str() {
           "team_sheet_search" => { team_sheet_search::catch_interaction(&ctx, interaction).await; }
+          "refresh_commands" => { refresh_commands::catch_interaction(&ctx, interaction). await; }
             _ => {}
           }
         // }
