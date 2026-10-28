@@ -1,14 +1,12 @@
 
 use serenity::async_trait;
 use serenity::gateway::client::EventHandler;
-use serenity::model::application::{Command};
 use serenity::gateway::client::Context;
 use serenity::model::event::FullEvent;
 use crate::msg_events::*;
 use crate::msg_commands::*;
 use crate::time::get_time;
 use crate::command_registration::check_existing_global_commands;
-use crate::utils::init_utils::command_registration::delete_global_commands;
 
 pub struct Handler;
 
