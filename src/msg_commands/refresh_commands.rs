@@ -1,4 +1,4 @@
-use serenity::builder::{CreateCommand, CreateInteractionResponse, CreateInteractionResponseMessage};
+use serenity::builder::{CreateCommand, EditInteractionResponse};
 use serenity::model::application::CommandInteraction;
 use serenity::gateway::client::Context;
 use crate::command_registration::*;
@@ -15,6 +15,10 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
 pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
   println!("{} [REFRESH_COMMANDS]: Triggered!!", get_time());
 
+  if let Err(why) = command.defer(&ctx.http).await {
+    println!("{} [REFRESH_COMMANDS]: Couldn't refresh commands!! D: {why:?}", get_time());
+  };
+
   let global_commands = vec![
     refresh_commands::get_command_info().await,
     team_sheet_search::get_command_info().await
@@ -22,13 +26,11 @@ pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
   delete_global_commands(&ctx).await;
   set_global_commands(&ctx, global_commands).await;
 
-  let builder = CreateInteractionResponse::Message(
-    CreateInteractionResponseMessage::new().content("Commands refreshed successfully!!")
-  );
-  
+  let builder = EditInteractionResponse::new().content("Commands refreshed successfully!!");
+
   println!("{} [REFRESH_COMMANDS]: Executed Successfully!!", get_time());
 
-  if let Err(why) = command.create_response(&ctx.http, builder).await {
-    eprintln!("RIP I think the bot died - peroroo: {why:?}")
+  if let Err(why) = command.edit_response(&ctx.http, builder).await {
+    println!("RIP I think the bot died - peroroo: {why:?}")
   }
 }
