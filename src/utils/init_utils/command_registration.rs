@@ -12,12 +12,12 @@ pub async fn check_existing_global_commands (ctx: &Context) -> () {
     Ok(global_commands_vec) => {
       match global_commands_vec.len() {
         0 => {
-          println!("{} [COMMAND_REGISTRATION_UTILS]: There are 0 registered global commands!! Adding \"refresh_commands\"...", get_time());
+          println!("[{}] [COMMAND_REGISTRATION_UTILS]: There are 0 registered global commands!! Adding \"refresh_commands\"...", get_time());
           set_global_commands(&ctx, vec![refresh_commands::get_command_info().await]).await;
         }
 
         _ => {
-          println!("{} [COMMAND_REGISTRATION_UTILS]: Found {} global commands!! Checking for the \"refresh_commands\" command...", get_time(), global_commands_vec.len());
+          println!("[{}] [COMMAND_REGISTRATION_UTILS]: Found {} global commands!! Checking for the \"refresh_commands\" command...", get_time(), global_commands_vec.len());
           let mut count: i8 = 0; 
           for command in &global_commands_vec {
             if command.name == "refresh_commands" {
@@ -28,21 +28,21 @@ pub async fn check_existing_global_commands (ctx: &Context) -> () {
             }
           }
           if (count as usize) == global_commands_vec.len() {
-            println!("{} [COMMAND_REGISTRATION_UTILS]: Cannot find \"refresh_commands\" command!! Adding \"refresh_commands\"...", get_time());
+            println!("[{}] [COMMAND_REGISTRATION_UTILS]: Cannot find \"refresh_commands\" command!! Adding \"refresh_commands\"...", get_time());
             set_global_commands(&ctx, vec![refresh_commands::get_command_info().await]).await;
           }
         }
       }
     }
     Err(err) => {
-      println!("{} [COMMAND_REGISTRATION_UTILS]: Couldn't check existing global commands!! D: \n{err:?}", get_time());
+      println!("[{}] [COMMAND_REGISTRATION_UTILS]: Couldn't check existing global commands!! D: \n{err:?}", get_time());
     }
   }
 }
 
 pub async fn set_global_commands (ctx: &Context, global_commands: Vec<CreateCommand<'_>>) {
   if let Err(err) = ctx.http.create_global_commands(&global_commands).await {
-      println!("[COMMAND_REGISTRATION_UTILS]: Failed to set global commands!! D: \n{err:?}");
+      println!("[{}] [COMMAND_REGISTRATION_UTILS]: Failed to set global commands!! D: \n{err:?}", get_time());
   }
 }
 
