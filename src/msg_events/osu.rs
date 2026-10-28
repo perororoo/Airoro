@@ -47,7 +47,7 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
     let container_components = vec![
       CreateContainerComponent::Section(
         CreateSection::new(vec![CreateSectionComponent::TextDisplay(CreateTextDisplay::new(
-          "🇵🇭   **peroroo: 10,046pp (#7,670 PH167)**\n## [**Wolpis Kater - Oxalis [Wizllia] [8.61★]**](https://osu.ppy.sh/beatmapsets/1347859#osu/2791233)\n**<:A_:1564882011703873596> +NFCL  2,360,810  94.98% <t:1793003520:R>**\n__229x/1999x__ • __190.21pp__ • 38❌ `{1320/49/0/38}`\n"
+          "🇵🇭   **peroroo: 10,046pp (#7,670 PH167)**\n## [**Wolpis Kater - Oxalis [Wizllia] [8.61★]**](https://osu.ppy.sh/beatmapsets/1347859#osu/2791233)\n**<:A_:1411964123369050132> +NFCL  2,360,810  94.98% <t:1793003520:R>**\n__229x/1999x__ • __190.21pp__ • 38❌ `{1320/49/0/38}`\n"
         ))], 
         CreateSectionAccessory::Thumbnail(
           CreateThumbnail::new(CreateUnfurledMediaItem::new("https://a.ppy.sh/10053373?1792664583.png")))

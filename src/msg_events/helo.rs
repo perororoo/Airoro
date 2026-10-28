@@ -58,6 +58,18 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
     }
   }
 
+  if text.contains("goodbye") || text.contains("bye") || text.contains("byebye") || text.contains("i go now") {
+    if roll_chance(user_name, 1, 20) != 1 {
+        if let Err(error) = message.reply_ping(&ctx.http, "o7").await {
+            println!("Error sending message: {error:?}");
+        }
+      } else {
+        if let Err(error) = message.reply_ping(&ctx.http, "byebye!! o//").await {
+          println!("Error sending message: {error:?}");
+        }
+      }
+  }
+
   if text.starts_with("wow") || text.starts_with("woah") {
     let media_url = "./media/wow.mp3";
     if let Err(error) = message.channel_id.send_message(&ctx.http, audio_attachment_builder(media_url, Some(message)).await).await {
@@ -71,5 +83,4 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
       println!("Error sending message: {error:?}");
     }
   }
-
 }
