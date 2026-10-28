@@ -1,5 +1,7 @@
 # Airoro
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/perororoo/Airoro)
+
 Discord bot built on `serenity-next` and uhhhhhhhh I forgot...
 
 ## Notes
