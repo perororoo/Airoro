@@ -1,5 +1,4 @@
-use serenity::builder::{CreateCommand, CreateCommandOption};
-use serenity::model::application::{CommandOptionType};
+use serenity::builder::{CreateCommand};
 
 pub async fn get_command_info<'a>() -> CreateCommand<'a> {
   let command = CreateCommand::new("refresh_commands")
