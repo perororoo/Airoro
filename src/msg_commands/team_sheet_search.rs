@@ -1,7 +1,6 @@
 use std::sync::Arc;
 use serenity::builder::{CreateCommand, CreateCommandOption, CreateInteractionResponse, CreateInteractionResponseMessage};
-use serenity::model::application::{CommandOptionType};
-use serenity::model::application::CommandInteraction;
+use serenity::model::application::{CommandOptionType, CommandInteraction};
 use serenity::gateway::client::Context;
 
 pub async fn get_command_info<'a>() -> CreateCommand<'a> {
