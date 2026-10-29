@@ -9,6 +9,8 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
     .description("Shortcut for looking up team sheet templates for tournaments !! (RussianVaxei Template)")
     .add_option(
       CreateCommandOption::new(CommandOptionType::Integer, "team_size", "how many team members do you have? :D (1-16)")
+        .min_int_value(1)
+        .max_int_value(16)
         .required(true),
   );
 
@@ -181,7 +183,7 @@ pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
 
     _ => {
       let builder = CreateInteractionResponse::Message(
-        CreateInteractionResponseMessage::new().content("Please enter a number between 1-16!!\n\nちょっと困りますー TAT")
+        CreateInteractionResponseMessage::new().content("An error occured!! D:")
       );
       if let Err(why) = command.create_response(&ctx.http, builder).await {
         eprintln!("RIP I think the bot died - peroroo: {why:?}")
