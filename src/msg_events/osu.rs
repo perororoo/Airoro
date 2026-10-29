@@ -1,20 +1,6 @@
-use serenity::all::ChannelAction::Create;
 use serenity::model::channel::{ Message, MessageFlags };
 use serenity::gateway::client::Context;
-use serenity::builder::{
-    CreateContainer, 
-    CreateContainerComponent, 
-    CreateMessage, 
-    CreateSection, 
-    CreateSectionComponent, 
-    CreateSectionAccessory, 
-    CreateThumbnail,
-    CreateUnfurledMediaItem,
-    CreateTextDisplay,
-    CreateMediaGallery,
-    CreateMediaGalleryItem,
-    CreateSeparator
-};
+use serenity::builder::*;
 
 pub async fn catch_message(ctx: &Context, message: &Message) {
   let text = message.content.to_lowercase();
@@ -44,6 +30,26 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
   }
 
   if text == "!!rs" {
+    let embed = CreateEmbed::new()
+      .author(CreateEmbedAuthor::new("🇵🇭   peroroo: 10,046pp (#7,670 PH167)"))
+      .title("Wolpis Kater - Oxalis [Wizllia] [8.61★]")
+      .url("https://osu.ppy.sh/beatmapsets/1347859#osu/2791233")
+      .thumbnail("https://a.ppy.sh/10053373?1792664583.png", None)
+      .image("https://assets.ppy.sh/beatmaps/1347859/covers/cover.jpg", None)
+      .field("A +NFCL  2,360,810  94.98% <t:1793003520:R>", "__229x/1999x__ • __190.21pp__ • 38❌ `{1320/49/0/38}`", false)
+      .footer(CreateEmbedFooter::new("CS: 3.5 AR: 10 OD: 9.5 HP: 5 • 04:25 • 252BPM"))
+      .color(0xd3e59d); // Note: 0xFFFFFF doesn't work, if going for white use 0xFDFDFD or anything lower than 0xFFFFFF
+    
+    let builder = CreateMessage::new()
+      .content("Try #2")
+      .embed(embed);
+
+    if let Err(error) = message.channel_id.send_message(&ctx.http, builder).await {
+      println!("Error sending message: {error:?}");
+    }
+  }
+
+  if text == "!!rs -b" {
     let container_components = vec![
       CreateContainerComponent::Section(
         CreateSection::new(vec![CreateSectionComponent::TextDisplay(CreateTextDisplay::new(
@@ -69,7 +75,7 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
 
     let container = CreateContainer::new(container_components)
       // Optional: Set a left-side accent color bar on the container
-      .accent_color(0xFFFFFF); // Blurple color
+      .accent_color(0xd3e59d); // Blurple color
 
     let builder = CreateMessage::new()
             // Important: Components V2 requires the IS_COMPONENTS_V2 message flag (1 << 15)
