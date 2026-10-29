@@ -21,7 +21,7 @@ pub async fn check_existing_global_commands (ctx: &Context) -> () {
           let mut count: i8 = 0; 
           for command in &global_commands_vec {
             if command.name == "refresh_commands" {
-              println!("{} [COMMAND_REGISTRATION_UTILS]: \"refresh_commands\" command has been found!!", get_time());
+              println!("[{}] [COMMAND_REGISTRATION_UTILS]: \"refresh_commands\" command has been found!!", get_time());
               break;
             } else {
               count += 1;
