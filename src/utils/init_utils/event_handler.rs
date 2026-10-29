@@ -45,7 +45,8 @@ impl EventHandler for Handler {
         if let Some(interaction) = interaction.as_command() {
           match interaction.data.name.as_str() {
           "team_sheet_search" => { team_sheet_search::catch_interaction(&ctx, interaction).await; }
-          "refresh_commands" => { refresh_commands::catch_interaction(&ctx, interaction). await; }
+          "refresh_commands" => { refresh_commands::catch_interaction(&ctx, interaction).await; }
+          "register" => { register::catch_interaction(&ctx, interaction).await; }
             _ => {}
           }
         // }

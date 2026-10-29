@@ -21,7 +21,8 @@ pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
 
   let global_commands = vec![
     refresh_commands::get_command_info().await,
-    team_sheet_search::get_command_info().await
+    team_sheet_search::get_command_info().await,
+    register::get_command_info().await
   ];
   delete_global_commands(&ctx).await;
   set_global_commands(&ctx, global_commands).await;
