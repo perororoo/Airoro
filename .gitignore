@@ -2,3 +2,4 @@
 .env
 /media
 /other_files
+airoro_database.sqlite
