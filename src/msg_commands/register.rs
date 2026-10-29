@@ -216,6 +216,7 @@ pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
       }
     }
   }
+  database_pool.close().await;
   println!("[{}] [REGISTER]: Executed Successfully!!", get_time());
 
 }
