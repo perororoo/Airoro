@@ -36,7 +36,7 @@ pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
     "https://docs.google.com/spreadsheets/d/19-aUqSUIItzgo7w7QnXqBaPQjnZyzjT0_pOvfV1CelU/edit",
     "https://docs.google.com/spreadsheets/d/1an5Kt77u1FffBFLkgonWy6pNsWaS1TqXG2MFhbgooTY/edit"
   ]);
-  match command.data.options.iter().find(|opt| opt.name == "team_size").unwrap().value.as_i64().unwrap() {
+  match command.data.options.iter().find(|opt| opt.name == "team_size").unwrap().value.as_i64().unwrap() { // TODO: Fix bad syntax plz
     1 => {
       let builder = CreateInteractionResponse::Message(
         CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[0])
