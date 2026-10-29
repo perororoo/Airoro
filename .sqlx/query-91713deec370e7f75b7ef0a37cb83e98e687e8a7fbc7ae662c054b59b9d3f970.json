@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT OR REPLACE INTO osu_profiles (osu_id, discord_id) VALUES (?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "91713deec370e7f75b7ef0a37cb83e98e687e8a7fbc7ae662c054b59b9d3f970"
+}
