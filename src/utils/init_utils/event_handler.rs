@@ -47,7 +47,7 @@ impl EventHandler for Handler {
           "team_sheet_search" => { team_sheet_search::catch_interaction(&ctx, interaction).await; }
           "refresh_commands" => { refresh_commands::catch_interaction(&ctx, interaction).await; }
           "register" => { register::catch_interaction(&ctx, interaction).await; }
-            _ => {}
+          _ => {}
           }
         // }
         }
