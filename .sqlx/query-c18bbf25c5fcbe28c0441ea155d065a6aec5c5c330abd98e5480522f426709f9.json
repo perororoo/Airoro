@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT OR REPLACE INTO airoros_friends (discord_id, nickname) VALUES (?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "c18bbf25c5fcbe28c0441ea155d065a6aec5c5c330abd98e5480522f426709f9"
+}

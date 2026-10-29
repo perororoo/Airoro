@@ -11,7 +11,7 @@ tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
 rosu-v2 = "0.11.0"
 openssl = { version = "0.10.81", features = ["vendored"] }
 openssl-sys = { version="0.9.117", features = ["vendored"] }
-sqlx = { version = "0.9.0", features = ["sqlite"] }
+sqlx = { version = "0.9.0", features = ["sqlite", "runtime-tokio"] }
 
 [dependencies.serenity]
 git = "https://github.com/serenity-rs/serenity"
