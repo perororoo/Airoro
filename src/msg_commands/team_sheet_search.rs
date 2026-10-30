@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use serenity::builder::{CreateCommand, CreateCommandOption, CreateInteractionResponse, CreateInteractionResponseMessage};
+use serenity::builder::{CreateCommand, CreateCommandOption, EditInteractionResponse};
 use serenity::model::application::{CommandOptionType, CommandInteraction, ResolvedValue};
 use serenity::gateway::client::Context;
 
@@ -16,7 +16,7 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
   return command;
 }
 
-pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) { 
+pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) -> EditInteractionResponse<'a> {
   let template_sheet_links: Arc<[&str]> = Arc::new([
     "https://docs.google.com/spreadsheets/d/1wyTPXO713ImIdlVDbs3fzBdJ86rDuhUBMkuRbBX82_U/edit",
     "https://docs.google.com/spreadsheets/d/1zhNy3-f81ifMlHYR2eLXnlqy8LKww9p65L0tIiz3OsU/edit",
@@ -37,165 +37,32 @@ pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
   ]);
   
   let options = command.data.options();
+  let Some(option) = options.first() else {
+    return EditInteractionResponse::new().content("An error occured!! D:");
+  };
 
-  if let Some(option) = options.first() { // uhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-    if let ResolvedValue::Integer(value) = option.value {
-      match value { // TODO: Fix bad syntax plz
-        1 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[0])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
+  let ResolvedValue::Integer(value) = option.value else {
+    return EditInteractionResponse::new().content("An error occured!! D:");
+  };
 
-        2 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[1])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        3 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[2])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        4 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[3])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        5 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[4])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        6 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[5])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        7 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[6])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        8 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[7])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        9 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[8])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        10 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[9])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        11 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[10])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        12 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[11])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        13 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[12])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        14 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[13])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        15 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[14])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        16 => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("Here you go !! \n".to_owned() + template_sheet_links[15])
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-
-        _ => {
-          let builder = CreateInteractionResponse::Message(
-            CreateInteractionResponseMessage::new().content("An error occured!! D:")
-          );
-          if let Err(why) = command.create_response(&ctx.http, builder).await {
-            eprintln!("RIP I think the bot died - peroroo: {why:?}")
-          }
-        }
-      }
-    }
-  } 
+  match value { // note for peroroo later: these are doing implicit returns!!!! don't get confused!!!!
+    1 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[0]) }
+    2 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[1]) }
+    3 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[2]) }
+    4 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[3]) }
+    5 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[4]) }
+    6 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[5]) }
+    7 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[6]) }
+    8 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[7]) }
+    9 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[8]) }
+    10 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[9]) }
+    11 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[10]) }
+    12 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[11]) }
+    13 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[11]) }
+    14 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[13]) }
+    15 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[14]) }
+    16 => { EditInteractionResponse::new().content("Here you go !! \n".to_owned() + template_sheet_links[15]) }
+    _ => { EditInteractionResponse::new().content("An error occured!! D:") }
+  }
+} 
   
-
-}

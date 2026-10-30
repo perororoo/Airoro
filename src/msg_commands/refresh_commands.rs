@@ -12,7 +12,7 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
   return command;
 }
 
-pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
+pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) -> EditInteractionResponse<'a> {
   println!("{} [REFRESH_COMMANDS]: Triggered!!", get_time());
 
   let global_commands = vec![
@@ -23,11 +23,9 @@ pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
   delete_global_commands(&ctx).await;
   set_global_commands(&ctx, global_commands).await;
 
-  let builder = EditInteractionResponse::new().content("Commands refreshed successfully!!");
-
   println!("{} [REFRESH_COMMANDS]: Executed Successfully!!", get_time());
 
-  if let Err(why) = command.edit_response(&ctx.http, builder).await {
-    println!("RIP I think the bot died - peroroo: {why:?}")
-  }
+  let builder = EditInteractionResponse::new().content("Commands refreshed successfully!!");
+
+  return builder;
 }

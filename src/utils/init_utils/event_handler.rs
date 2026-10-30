@@ -1,7 +1,7 @@
 
+use serenity::all::EditInteractionResponse;
 use serenity::async_trait;
-use serenity::gateway::client::EventHandler;
-use serenity::gateway::client::Context;
+use serenity::gateway::client::{ Context, EventHandler };
 use serenity::model::event::FullEvent;
 use crate::msg_events::*;
 use crate::msg_commands::*;
@@ -44,16 +44,19 @@ impl EventHandler for Handler {
       } => {
         if let Some(command) = interaction.as_command() {
           if let Err(why) = command.defer(&ctx.http).await {
-            println!("{} [EVENT_HANDLER::INTERACTIONCREATE]: Couldn't defer message!! D: {why:?}", get_time());
+            println!("{} [EVENT_HANDLER::INTERACTION_CREATE]: Couldn't defer message!! D:\n{why:?}", get_time());
             return;
           };
-          match command.data.name.as_str() {
-          "team_sheet_search" => { team_sheet_search::catch_interaction(&ctx, command).await; }
-          "refresh_commands" => { refresh_commands::catch_interaction(&ctx, command).await; }
-          "register" => { register::catch_interaction(&ctx, command).await; }
-          _ => {}
+          let builder = match command.data.name.as_str() {
+            "team_sheet_search" => team_sheet_search::catch_interaction(&ctx, command).await,
+            "refresh_commands" => refresh_commands::catch_interaction(&ctx, command).await,
+            "register" => register::catch_interaction(&ctx, command).await,
+            _ => EditInteractionResponse::new().content("Couldn't find command!!")
+          };
+
+          if let Err(why) = command.edit_response(&ctx.http, builder).await {
+            println!("[{}] [EVENT_HANDLER::INTERACTION_CREATE]: Cannot respond to slash command!! D:\n{why}", get_time());
           }
-        // }
         }
       }
       _ => {}
