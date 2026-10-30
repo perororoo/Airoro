@@ -26,7 +26,9 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
           CommandOptionType::String,
           "nickname", 
           "What do you want me to call you as? :D"
-        ).required(true)
+        )
+        .max_length(500)
+        .required(true)
       )
     );
 
