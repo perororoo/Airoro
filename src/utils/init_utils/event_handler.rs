@@ -4,9 +4,12 @@ use serenity::async_trait;
 use serenity::gateway::client::{ Context, EventHandler };
 use serenity::model::event::FullEvent;
 use crate::command_registration::check_existing_global_commands;
+use crate::database_init;
 use crate::{ airoro_log, msg_events::*, msg_commands::* };
 
-pub struct Handler;
+pub struct Handler {
+  pub database: sqlx::SqlitePool,
+}
 
 #[async_trait]
 impl EventHandler for Handler {
@@ -48,7 +51,7 @@ impl EventHandler for Handler {
           let builder = match command.data.name.as_str() {
             "team_sheet_search" => team_sheet_search::catch_interaction(command).await,
             "refresh_commands" => refresh_commands::catch_interaction(&ctx).await,
-            "register" => register::catch_interaction(command).await,
+            "register" => register::catch_interaction(command, &self.database).await,
             _ => EditInteractionResponse::new().content("Couldn't find command!!")
           };
 

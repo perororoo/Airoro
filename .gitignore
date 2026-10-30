@@ -3,3 +3,5 @@
 /media
 /other_files
 airoro_database.sqlite
+airoro_database.sqlite-shm
+airoro_database.sqlite-wal

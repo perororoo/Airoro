@@ -19,7 +19,22 @@ SQLX_OFFLINE = true
 DATABASE_URL = sqlite:airoro_database.sqlite
 ```
 
+Run `cargo sqlx database setup`
+
 ## Building
+
+## What needs to be in the same directory as the executable
+
+- /media folder (optional, but any code block that uses the `crate::utils::msg_utils::builders::audio_attachment_builder()` won't work ;-;)
+- .sqlx folder (this is where queries used by sqlx are located, this is important)
+- airoro_database.sqlite (see the "SQLite Database Setup" section)
+- .env file containing:
+
+```
+DISCORD_TOKEN = Your bot's token
+SQLX_OFFLINE = true
+DATABASE_URL = sqlite:airoro_database.sqlite
+```
 
 ### Cross-compiling for Termux
 
