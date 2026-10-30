@@ -2,7 +2,7 @@ use serenity::all::ResolvedValue;
 use serenity::builder::{CreateCommand, CreateCommandOption, EditInteractionResponse};
 use serenity::model::application::{CommandOptionType, CommandInteraction};
 use serenity::gateway::client::Context;
-use crate::time::get_time;
+use crate::airoro_log;
 use crate::utils::init_utils::database_init;
 
 
@@ -36,7 +36,7 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
 }
 
 pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) -> EditInteractionResponse<'a> {
-  println!("{} [REGISTER]: Triggered!!", get_time());
+  airoro_log!("[REGISTER]: Triggered!!");
 
   let database_pool = match database_init::initialize_database().await {
     Ok(pool) => pool,
@@ -78,11 +78,11 @@ pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) 
 
           match database_osu_id {
             Ok(_result) => {
-              println!("[{}] [REGISTER]: Executed Successfully!!", get_time());
+              airoro_log!("[REGISTER]: Executed Successfully!!");
               return EditInteractionResponse::new().content(format!("Registration successful!! \n-# Sorry, this command is not finished yet!"));
             }
             Err(why) => {
-              println!("[{}] [REGISTER]: Something went wrong, couldn't register osu profile TvT {why:?}", get_time());
+              airoro_log!("[REGISTER]: Something went wrong, couldn't register osu profile TvT {why:?}");
               return EditInteractionResponse::new().content(format!("Sorry, what was it again? An error occured... TvT \n-# Sorry, this command is not finished yet!"));
             }
           }
@@ -100,7 +100,7 @@ pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) 
 
           match change_username {
             Ok(_result) => {
-              println!("[{}] [REGISTER]: Registered {} successfully!!", get_time(), new_username);
+              airoro_log!("[REGISTER]: Registered {} successfully!!", new_username);
 
               let database_osu_id = sqlx::query!(
                 "INSERT OR REPLACE INTO osu_profiles (osu_id, discord_id) VALUES (?, ?)",
@@ -112,17 +112,17 @@ pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) 
 
               match database_osu_id {
                 Ok(_result) => {
-                  println!("[{}] [REGISTER]: osu! profile linked successfully!!", get_time());
+                  airoro_log!("[REGISTER]: osu! profile linked successfully!!");
                   return EditInteractionResponse::new().content(format!("Registration successful!! \n-# Sorry, this command is not finished yet!"));
                 }
                 Err(why) => {
-                  println!("[{}] [REGISTER]: Something went wrong, couldn't register osu profile TvT {why:?}", get_time());
+                  airoro_log!("[REGISTER]: Something went wrong, couldn't register osu profile TvT {why:?}");
                   return EditInteractionResponse::new().content(format!("Sorry, what was it again? An error occured... TvT \n-# Sorry, this command is not finished yet!"));
                   }
                 }
               }
               Err(why) => { 
-                println!("[{}] [REGISTER]: Something went wrong, couldn't register {} TvT {why:?}", get_time(), new_username);
+                airoro_log!("[REGISTER]: Something went wrong, couldn't register {} TvT {why:?}", new_username);
                 return EditInteractionResponse::new().content(format!("Sorry, what was it again? An error occured... TvT \n-# Sorry, this command is not finished yet!"));
               }
             } 
@@ -152,11 +152,11 @@ pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) 
 
           match change_username {
             Ok(_result) => {
-              println!("[{}] [REGISTER]: Nickname changed successfully!!", get_time());
+              airoro_log!("[REGISTER]: Nickname changed successfully!!");
               return EditInteractionResponse::new().content(format!("Nickname set successfully!! Hello {}!! o// \n-# Sorry, this command is not finished yet!", value));
             }
             Err(why) => {
-              println!("[{}] [REGISTER]: Something went wrong, couldn't change nickname TvT {why:?}", get_time());
+              airoro_log!("[REGISTER]: Something went wrong, couldn't change nickname TvT {why:?}");
               return EditInteractionResponse::new().content(format!("Sorry, what was it again? An error occured... TvT \n-# Sorry, this command is not finished yet!"));
             }
           }
@@ -174,11 +174,11 @@ pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) 
 
           match change_username {
             Ok(_result) => {
-              println!("[{}] [REGISTER]: Nickname changed successfully!!", get_time());
+              airoro_log!("[REGISTER]: Nickname changed successfully!!");
               return EditInteractionResponse::new().content(format!("Nickname set successfully!! Hello {}!! o// \n-# Sorry, this command is not finished yet!", value));
             }
             Err(why) => { 
-              println!("[{}] [REGISTER]: Something went wrong, couldn't change nickname TvT {why:?}", get_time());
+              airoro_log!("[REGISTER]: Something went wrong, couldn't change nickname TvT {why:?}");
               return EditInteractionResponse::new().content(format!("Sorry, what was it again? An error occured... TvT \n-# Sorry, this command is not finished yet!"));
             }
           }
@@ -189,6 +189,6 @@ pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) 
   
 }
  
-// println!("[{}] [REGISTER]: osu! profile linked successfully!! closing the database...", get_time());
+// airoro_log!("[REGISTER]: osu! profile linked successfully!! closing the database...");
 // database_pool.close().await;
   

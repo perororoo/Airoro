@@ -1,7 +1,7 @@
 use serenity::model::channel::Message;
 use serenity::gateway::client::Context;
 use super::gacha_util::*;
-use crate::utils::msg_utils::builders::{ audio_attachment_builder };
+use crate::{airoro_log, utils::msg_utils::builders::audio_attachment_builder};
 
 
 fn get_result_helios(roll: &i8) -> String {
@@ -37,22 +37,22 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
     let rolled_number = roll_chance(user_name, 0, 8);
     let result = get_result_helios(&rolled_number);
 
-    println!("[GACHA::CATCH_MESSAGE]: \"Helios\" Gacha triggered !!");
+    airoro_log!("[GACHA::CATCH_MESSAGE]: \"Helios\" Gacha triggered !!");
 
     match rolled_number {
       0..=3 => {
         match message.reply_ping(&ctx.http, result).await {
-          Ok(_) => println!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
-          Err(e) => println!("[GACHA::CATCH_MESSAGE]: Error sending message: {e:?}"),
+          Ok(_) => airoro_log!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
+          Err(why) => airoro_log!("[GACHA::CATCH_MESSAGE]: Error sending message: {why:?}"),
         }
       }
       4..=8 => {
         match message.channel_id.send_message(&ctx.http, audio_attachment_builder(&result, Some(message)).await).await {
-          Ok(_) => println!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
-          Err(e) => println!("[GACHA::CATCH_MESSAGE]: Error sending message: {e:?}"),
+          Ok(_) => airoro_log!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
+          Err(why) => airoro_log!("[GACHA::CATCH_MESSAGE]: Error sending message: {why:?}"),
         }
       }
-      _ => println!("{}", "The roll went out of range!! D: (Something went wrong :C)")
+      _ => airoro_log!("The roll went out of range!! D: (Something went wrong :C)")
     }
   } 
   
@@ -60,10 +60,10 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
     let rolled_number = roll_chance(user_name, 1, 5);
     let result = get_result_weii(rolled_number);
 
-    println!("[GACHA::CATCH_MESSAGE]: \"Helios.weii\" Gacha triggered !!");
+    airoro_log!("[GACHA::CATCH_MESSAGE]: \"Helios.weii\" Gacha triggered !!");
       match message.reply_ping(&ctx.http, result).await {
-        Ok(_) => println!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
-        Err(e) => println!("[GACHA::CATCH_MESSAGE]: Error sending message: {e:?}"),
+        Ok(_) => airoro_log!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
+        Err(why) => airoro_log!("[GACHA::CATCH_MESSAGE]: Error sending message: {why:?}"),
       }
     }
 }

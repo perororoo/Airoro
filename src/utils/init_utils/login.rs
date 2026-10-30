@@ -1,14 +1,14 @@
 use crate::event_handler::Handler;
 use serenity::Client;
 use serenity::all::GatewayIntents;
-use crate::time::get_time;
 use serenity::secrets::Token;
 use std::sync::Arc;
+use crate::airoro_log;
 
 pub async fn login_bot() -> Client {
   let token = Token::from_env("DISCORD_TOKEN").expect("Expected a token in the environment"); // Get bot token from .env
   
-  println!("[{}] [LOGIN]: Token loaded successfully !!", get_time());
+  airoro_log!("[LOGIN]: Token loaded successfully !!");
 
   let intents =  // Set Discord Gateway Intents
     GatewayIntents::GUILD_MESSAGES |

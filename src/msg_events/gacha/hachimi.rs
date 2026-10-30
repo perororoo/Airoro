@@ -2,7 +2,7 @@ use rand::seq::IndexedRandom;
 use serenity::model::channel::Message;
 use serenity::gateway::client::Context;
 use super::gacha_util::*;
-use crate::utils::msg_utils::builders::{ audio_attachment_builder };
+use crate::{airoro_log, utils::msg_utils::builders::audio_attachment_builder};
 
 fn hachimi_r() -> String {
   let mut rng = rand::rng();
@@ -52,17 +52,17 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
     let rarity = get_rarity(&rolled_number);
     let result: String = get_result(&rarity);
 
-    println!("[GACHA::CATCH_MESSAGE]: \"hachimi\" Gacha triggered !!");
+    airoro_log!("[GACHA::CATCH_MESSAGE]: \"hachimi\" Gacha triggered !!");
     
     if rarity == GachaResult::R || rarity == GachaResult::SSR {
       match message.reply_ping(&ctx.http, result).await {
-        Ok(_) => println!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
-        Err(e) => println!("[GACHA::CATCH_MESSAGE]: Error sending message: {e:?}"),
+        Ok(_) => airoro_log!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
+        Err(why) => airoro_log!("[GACHA::CATCH_MESSAGE]: Error sending message: {why:?}"),
       }
     } else {
       match message.channel_id.send_message(&ctx.http, audio_attachment_builder(&result, Some(message)).await).await {
-        Ok(_) => println!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
-        Err(e) => println!("[GACHA::CATCH_MESSAGE]: Error sending message: {e:?}"),
+        Ok(_) => airoro_log!("[GACHA::CATCH_MESSAGE]: Message sent!!"),
+        Err(why) => airoro_log!("[GACHA::CATCH_MESSAGE]: Error sending message: {why:?}"),
       }
     }
     

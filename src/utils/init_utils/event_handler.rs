@@ -3,10 +3,8 @@ use serenity::all::EditInteractionResponse;
 use serenity::async_trait;
 use serenity::gateway::client::{ Context, EventHandler };
 use serenity::model::event::FullEvent;
-use crate::msg_events::*;
-use crate::msg_commands::*;
-use crate::time::get_time;
 use crate::command_registration::check_existing_global_commands;
+use crate::{ airoro_log, msg_events::*, msg_commands::* };
 
 pub struct Handler;
 
@@ -33,10 +31,10 @@ impl EventHandler for Handler {
       FullEvent::Ready { 
         data_about_bot, .. 
       } => {
-        println!("[{}] [EVENT_HANDLER::READY]: {} is ready !!", get_time(), data_about_bot.user.name);
-        println!("[{}] [EVENT_HANDLER::READY]: Checking existing commands...", get_time());
+        airoro_log!("[EVENT_HANDLER::READY]: {} is ready !!", data_about_bot.user.name);
+        airoro_log!("[EVENT_HANDLER::READY]: Checking existing commands...");
         check_existing_global_commands(&ctx).await;
-        println!("[{}] [EVENT_HANDLER::READY]: Checking Successful!!", get_time());
+        airoro_log!("[EVENT_HANDLER::READY]: Checking Successful!!");
       }
 
       FullEvent::InteractionCreate { 
@@ -44,7 +42,7 @@ impl EventHandler for Handler {
       } => {
         if let Some(command) = interaction.as_command() {
           if let Err(why) = command.defer(&ctx.http).await {
-            println!("{} [EVENT_HANDLER::INTERACTION_CREATE]: Couldn't defer message!! D:\n{why:?}", get_time());
+            airoro_log!("[EVENT_HANDLER::INTERACTION_CREATE]: Couldn't defer message!! D:\n{why:?}");
             return;
           };
           let builder = match command.data.name.as_str() {
@@ -55,7 +53,7 @@ impl EventHandler for Handler {
           };
 
           if let Err(why) = command.edit_response(&ctx.http, builder).await {
-            println!("[{}] [EVENT_HANDLER::INTERACTION_CREATE]: Cannot respond to slash command!! D:\n{why}", get_time());
+            airoro_log!("[EVENT_HANDLER::INTERACTION_CREATE]: Cannot respond to slash command!! D:\n{why}");
           }
         }
       }

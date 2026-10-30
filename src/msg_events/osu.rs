@@ -1,31 +1,32 @@
 use serenity::model::channel::{ Message, MessageFlags };
 use serenity::gateway::client::Context;
 use serenity::builder::*;
+use crate::airoro_log;
 
 pub async fn catch_message(ctx: &Context, message: &Message) {
   let text = message.content.to_lowercase();
 
   if text.contains("quit w") {
     if let Err(error) = message.reply_ping(&ctx.http, "[pov3.mp4](https://peroroo.s-ul.eu/KfYiQgxK.mp4)").await {
-      println!("Error sending message: {error:?}");
+      airoro_log!("Error sending message: {error:?}");
     }
   }
 
   if text.contains("ice angel") {
     if let Err(error) = message.reply_ping(&ctx.http, "[umawhat.mp4](https://peroroo.s-ul.eu/LkZznDwP.mp4)").await {
-      println!("Error sending message: {error:?}");
+      airoro_log!("Error sending message: {error:?}");
     }
   }
 
   if text.contains("crystal snow") {
     if let Err(error) = message.reply_ping(&ctx.http, "[crystalsnow.mp4](https://peroroo.s-ul.eu/lcpzKd6i.mp4)").await {
-      println!("Error sending message: {error:?}");
+      airoro_log!("Error sending message: {error:?}");
     }
   }
 
   if text.contains("astrosexy") {
     if let Err(error) = message.reply_ping(&ctx.http, "[astrosexy.mp4](https://peroroo.s-ul.eu/6XtHhc93.mp4)").await {
-      println!("Error sending message: {error:?}");
+      airoro_log!("Error sending message: {error:?}");
     }
   }
 
@@ -45,7 +46,7 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
       .embed(embed);
 
     if let Err(error) = message.channel_id.send_message(&ctx.http, builder).await {
-      println!("Error sending message: {error:?}");
+      airoro_log!("Error sending message: {error:?}");
     }
   }
 
@@ -83,7 +84,7 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
             .components(vec![serenity::builder::CreateComponent::Container(container)]);
 
     if let Err(why) = message.channel_id.send_message(&ctx.http, builder).await {
-        eprintln!("Failed to send V2 container message: {why:?}");
+        airoro_log!("Failed to send V2 container message: {why:?}");
     }
   }
 }
