@@ -42,11 +42,15 @@ impl EventHandler for Handler {
       FullEvent::InteractionCreate { 
         interaction, .. 
       } => {
-        if let Some(interaction) = interaction.as_command() {
-          match interaction.data.name.as_str() {
-          "team_sheet_search" => { team_sheet_search::catch_interaction(&ctx, interaction).await; }
-          "refresh_commands" => { refresh_commands::catch_interaction(&ctx, interaction).await; }
-          "register" => { register::catch_interaction(&ctx, interaction).await; }
+        if let Some(command) = interaction.as_command() {
+          if let Err(why) = command.defer(&ctx.http).await {
+            println!("{} [EVENT_HANDLER::INTERACTIONCREATE]: Couldn't defer message!! D: {why:?}", get_time());
+            return;
+          };
+          match command.data.name.as_str() {
+          "team_sheet_search" => { team_sheet_search::catch_interaction(&ctx, command).await; }
+          "refresh_commands" => { refresh_commands::catch_interaction(&ctx, command).await; }
+          "register" => { register::catch_interaction(&ctx, command).await; }
           _ => {}
           }
         // }

@@ -15,10 +15,6 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
 pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
   println!("{} [REFRESH_COMMANDS]: Triggered!!", get_time());
 
-  if let Err(why) = command.defer(&ctx.http).await {
-    println!("{} [REFRESH_COMMANDS]: Couldn't refresh commands!! D: {why:?}", get_time());
-  };
-
   let global_commands = vec![
     refresh_commands::get_command_info().await,
     team_sheet_search::get_command_info().await,

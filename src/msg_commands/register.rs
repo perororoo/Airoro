@@ -37,11 +37,7 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
 
 pub async fn catch_interaction (ctx: &Context, command: &CommandInteraction) {
   println!("{} [REGISTER]: Triggered!!", get_time());
-
-  if let Err(why) = command.defer(&ctx.http).await {
-    println!("{} [REGISTER]: Couldn't register user!! D: {why:?}", get_time());
-  };
-
+  
   let database_pool = match database_init::initialize_database().await {
     Ok(pool) => pool,
     Err(why) => {
