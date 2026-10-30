@@ -46,9 +46,9 @@ impl EventHandler for Handler {
             return;
           };
           let builder = match command.data.name.as_str() {
-            "team_sheet_search" => team_sheet_search::catch_interaction(&ctx, command).await,
-            "refresh_commands" => refresh_commands::catch_interaction(&ctx, command).await,
-            "register" => register::catch_interaction(&ctx, command).await,
+            "team_sheet_search" => team_sheet_search::catch_interaction(command).await,
+            "refresh_commands" => refresh_commands::catch_interaction(&ctx).await,
+            "register" => register::catch_interaction(command).await,
             _ => EditInteractionResponse::new().content("Couldn't find command!!")
           };
 

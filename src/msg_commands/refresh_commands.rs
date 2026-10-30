@@ -1,5 +1,4 @@
 use serenity::builder::{CreateCommand, EditInteractionResponse};
-use serenity::model::application::CommandInteraction;
 use serenity::gateway::client::Context;
 use crate::utils::init_utils::command_registration::*;
 use crate::{airoro_log, msg_commands::*};
@@ -11,7 +10,7 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
   return command;
 }
 
-pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) -> EditInteractionResponse<'a> {
+pub async fn catch_interaction<'a>(ctx: &Context) -> EditInteractionResponse<'a> {
   airoro_log!("[REFRESH_COMMANDS]: Triggered!!");
 
   let global_commands = vec![

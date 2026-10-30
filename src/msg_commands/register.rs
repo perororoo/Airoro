@@ -1,7 +1,6 @@
 use serenity::all::ResolvedValue;
 use serenity::builder::{CreateCommand, CreateCommandOption, EditInteractionResponse};
 use serenity::model::application::{CommandOptionType, CommandInteraction};
-use serenity::gateway::client::Context;
 use crate::airoro_log;
 use crate::utils::init_utils::database_init;
 
@@ -35,13 +34,13 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
   return command;
 }
 
-pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) -> EditInteractionResponse<'a> {
+pub async fn catch_interaction<'a>(command: &CommandInteraction) -> EditInteractionResponse<'a> {
   airoro_log!("[REGISTER]: Triggered!!");
 
   let database_pool = match database_init::initialize_database().await {
     Ok(pool) => pool,
-    Err(why) => {
-      return EditInteractionResponse::new().content("An error occured!! D:");
+    Err(_why) => {
+            return EditInteractionResponse::new().content("An error occured!! D:");
     }
   };
 

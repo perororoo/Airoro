@@ -1,7 +1,6 @@
 use std::sync::Arc;
 use serenity::builder::{CreateCommand, CreateCommandOption, EditInteractionResponse};
 use serenity::model::application::{CommandOptionType, CommandInteraction, ResolvedValue};
-use serenity::gateway::client::Context;
 
 pub async fn get_command_info<'a>() -> CreateCommand<'a> {
   let command = CreateCommand::new("team_sheet_search")
@@ -16,7 +15,7 @@ pub async fn get_command_info<'a>() -> CreateCommand<'a> {
   return command;
 }
 
-pub async fn catch_interaction<'a>(ctx: &Context, command: &CommandInteraction) -> EditInteractionResponse<'a> {
+pub async fn catch_interaction<'a>(command: &CommandInteraction) -> EditInteractionResponse<'a> {
   let template_sheet_links: Arc<[&str]> = Arc::new([
     "https://docs.google.com/spreadsheets/d/1wyTPXO713ImIdlVDbs3fzBdJ86rDuhUBMkuRbBX82_U/edit",
     "https://docs.google.com/spreadsheets/d/1zhNy3-f81ifMlHYR2eLXnlqy8LKww9p65L0tIiz3OsU/edit",
