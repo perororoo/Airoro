@@ -4,8 +4,9 @@ CREATE TABLE airoros_friends (
 );
 
 CREATE TABLE osu_profiles (
-  osu_id INTEGER NOT NULL PRIMARY KEY,
-  discord_id INTEGER NOT NULL,
+  osu_id INTEGER NOT NULL,
+  discord_id INTEGER NOT NULL UNIQUE,
+  PRIMARY KEY (osu_id, discord_id),
   FOREIGN KEY (discord_id)
     REFERENCES airoros_friends (discord_id)
 );
