@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO osu_profiles (osu_id)\n    VALUES (?)\n    ON CONFLICT DO NOTHING",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "c7a39c3db236a8ef81abfa0b7cf3a75f30553f7df59bc58d9fe3c1c1e9275106"
+}

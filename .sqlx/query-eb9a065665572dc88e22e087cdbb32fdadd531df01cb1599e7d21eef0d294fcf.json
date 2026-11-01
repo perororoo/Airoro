@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO osu_profile_link (osu_id, discord_id) \n    VALUES (?, ?)\n    ON CONFLICT DO \n    UPDATE\n    SET\n      osu_id = excluded.osu_id",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "eb9a065665572dc88e22e087cdbb32fdadd531df01cb1599e7d21eef0d294fcf"
+}

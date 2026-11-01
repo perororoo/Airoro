@@ -54,7 +54,13 @@ pub async fn find_dicord_user_id (discord_id: i64, database: &SqlitePool) -> sql
 
 pub async fn put_discord_id (discord_id: i64, nickname:&str, database: &SqlitePool) -> sqlx::Result<sqlx::sqlite::SqliteQueryResult, sqlx::Error> {
   let change_username = sqlx::query!(
-    "INSERT OR REPLACE INTO airoros_friends (discord_id, nickname) VALUES (?, ?)",
+    "INSERT INTO 
+      airoros_friends (discord_id, nickname) 
+      VALUES (?, ?) 
+      ON CONFLICT DO 
+      UPDATE
+      SET
+        nickname = excluded.nickname",
     discord_id,
     nickname
   )
@@ -66,7 +72,9 @@ pub async fn put_discord_id (discord_id: i64, nickname:&str, database: &SqlitePo
 
 pub async fn put_osu_id (osu_id: i64, database: &SqlitePool) -> sqlx::Result<sqlx::sqlite::SqliteQueryResult, sqlx::Error> {
   let database_osu_id = sqlx::query!(
-    "INSERT OR REPLACE INTO osu_profiles (osu_id) VALUES (?)",
+    "INSERT INTO osu_profiles (osu_id)
+    VALUES (?)
+    ON CONFLICT DO NOTHING",
     osu_id
   )
   .execute(database)
@@ -77,7 +85,12 @@ pub async fn put_osu_id (osu_id: i64, database: &SqlitePool) -> sqlx::Result<sql
 
 pub async fn link_osu (osu_id: i64, discord_id: i64, database: &SqlitePool) -> sqlx::Result<sqlx::sqlite::SqliteQueryResult, sqlx::Error> {
   let database_osu_id = sqlx::query!(
-    "INSERT OR REPLACE INTO osu_profile_link (osu_id, discord_id) VALUES (?, ?)",
+    "INSERT INTO osu_profile_link (osu_id, discord_id) 
+    VALUES (?, ?)
+    ON CONFLICT DO 
+    UPDATE
+    SET
+      osu_id = excluded.osu_id",
     osu_id,
     discord_id
   )

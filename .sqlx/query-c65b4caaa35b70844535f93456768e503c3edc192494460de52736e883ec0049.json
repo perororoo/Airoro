@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO \n      airoros_friends (discord_id, nickname) \n      VALUES (?, ?) \n      ON CONFLICT DO \n      UPDATE\n      SET\n        nickname = excluded.nickname",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "c65b4caaa35b70844535f93456768e503c3edc192494460de52736e883ec0049"
+}
