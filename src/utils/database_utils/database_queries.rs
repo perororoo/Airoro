@@ -8,42 +8,53 @@ pub struct AirorosFriends {
 
 #[derive(sqlx::FromRow, Debug, Clone)]
 pub struct OsuProfileLink {
-  discord_id: i64,
-  osu_id: i64
+  pub discord_id: i64,
+  pub osu_id: i64
 }
 
 #[derive(sqlx::FromRow, Debug, Clone)]
 pub struct OsuProfiles {
-  osu_id: i64
+  pub osu_id: i64
 }
 
 #[derive(sqlx::FromRow, Debug, Clone)]
 pub struct OsuScores {
-  score_id: i64,
-  map_id: i64,
-  osu_id: i64,
-  rank_letter: String,
-  score_lazer: i64,
-  score_classic: i64,
-  score_stable: i64,
-  accuracy: f32,
-  count_300: i64,
-  count_100: i64,
-  count_50: i64,
-  count_miss: i64,
-  pp: f32,
-  date_set: i64
+  pub score_id: i64,
+  pub map_id: i64,
+  pub osu_id: i64,
+  pub rank_letter: String,
+  pub score_lazer: i64,
+  pub score_classic: i64,
+  pub score_stable: i64,
+  pub accuracy: f32,
+  pub count_300: i64,
+  pub count_100: i64,
+  pub count_50: i64,
+  pub count_miss: i64,
+  pub pp: f32,
+  pub date_set: i64
 }
 
 #[derive(sqlx::FromRow, Debug, Clone)]
 pub struct OsuScoreRank {
-  rank_letter: String,
-  is_pass: i64
+  pub rank_letter: String,
+  pub is_pass: i64
 }
 
 pub async fn find_dicord_user_id (discord_id: i64, database: &SqlitePool) -> sqlx::Result<AirorosFriends, sqlx::Error> {
   let result = sqlx::query_as::<_, AirorosFriends>(
     "SELECT discord_id FROM airoros_friends WHERE discord_id = ?",
+  )
+  .bind(discord_id)
+  .fetch_one(database)
+  .await?;
+
+  Ok(result)
+}
+
+pub async fn find_osu_id_disc (discord_id: i64, database: &SqlitePool) -> sqlx::Result<OsuProfiles, sqlx::Error> {
+  let result = sqlx::query_as::<_, OsuProfiles>(
+    "SELECT osu_id FROM osu_profiles WHERE discord_id = ?",
   )
   .bind(discord_id)
   .fetch_one(database)
