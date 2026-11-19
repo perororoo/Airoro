@@ -9,7 +9,6 @@ use crate::{ airoro_log, msg_events::*, msg_commands::* };
 
 pub struct Handler {
   pub database: sqlx::SqlitePool,
-  pub osu: rosu_v2::Osu,
 }
 
 #[async_trait]
@@ -26,7 +25,7 @@ impl EventHandler for Handler {
             gacha::hachimi::catch_message(&ctx, &new_message),
             gacha::chiyono::catch_message(&ctx, &new_message),
             gacha::helios::catch_message(&ctx, &new_message),
-            osu::catch_message(&ctx, &new_message, &self.osu, &self.database),
+            osu::catch_message(&ctx, &new_message),
             five_digit_ph::catch_message(&ctx, &new_message)
           );
         }
