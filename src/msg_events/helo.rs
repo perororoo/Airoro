@@ -41,11 +41,11 @@ pub async fn catch_message(ctx: &Context, message: &Message) {
     _ => {}
   }
 
-  if text.contains("<@1406309729860321373>") { // AiRoro's ID
-    if let Err(error) = message.reply_ping(&ctx.http, "hi :D").await {
-      airoro_log!("Error sending message: {error:?}");
-    }
-  }
+  // if text.contains("<@1406309729860321373>") { // AiRoro's ID
+  //   if let Err(error) = message.reply_ping(&ctx.http, "hi :D").await {
+  //     airoro_log!("Error sending message: {error:?}");
+  //   }
+  // }
 
   if text.contains("i suck") {
     if let Err(error) = message.reply_ping(&ctx.http, "no you dont >:C").await {
