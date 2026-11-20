@@ -13,6 +13,7 @@ use utils::init_utils::*;
 use crate::event_handler::Handler;
 use async_openai;
 use std::any::Any;
+use serenity::model::id::UserId;
 
 
 #[tokio::main]
@@ -20,6 +21,9 @@ async fn main() {
   dotenv().ok(); // Initialize environment variables
 
   airoro_log!("[MAIN::INIT]: Environment variables loaded successfully !!");
+  airoro_log!("[MAIN::INIT]: Getting BOT_USER_ID...");
+  let bot_user_id  = UserId::new(dotenv::var("BOT_USER_ID").expect("\n[ERROR]: Cannot get BOT_USER_ID from .env!! Does it not exist?\n").parse::<u64>().unwrap());
+  airoro_log!("[MAIN::INIT] BOT_USER_ID Found!!: {}", bot_user_id);
   airoro_log!("[MAIN::INIT] Connecting to database...");
   let database = match database_init::initialize_database().await { 
     Ok(pool) => pool,
@@ -50,6 +54,7 @@ async fn main() {
   let mut bot_client = 
     Client::builder(token, intents) // Logs in the bot !!
     .event_handler(Arc::new(Handler {
+      bot_user_id,
       database,
       openai_client,
       chat_memory: chat_memory.into(),

@@ -2,7 +2,7 @@
 use std::any::Any;
 
 use async_openai::config::OpenAIConfig;
-use serenity::all::EditInteractionResponse;
+use serenity::all::{EditInteractionResponse, UserId};
 use serenity::async_trait;
 use serenity::gateway::client::{ Context, EventHandler };
 use serenity::model::event::FullEvent;
@@ -11,10 +11,11 @@ use crate::database_init;
 use crate::{ airoro_log, msg_events::*, msg_commands::* };
 
 pub struct Handler {
+  pub bot_user_id: UserId,
   pub database: sqlx::SqlitePool,
   pub openai_client: async_openai::Client<OpenAIConfig>,
   pub chat_memory: tokio::sync::Mutex<Vec<String>>,
-  pub tokens_used: tokio::sync::Mutex<i32>,
+  pub tokens_used: tokio::sync::Mutex<u32>,
 }
 
 #[async_trait]
@@ -35,7 +36,7 @@ impl EventHandler for Handler {
             gacha::helios::catch_message(&ctx, &new_message),
             osu::catch_message(&ctx, &new_message),
             five_digit_ph::catch_message(&ctx, &new_message),
-            airoro_chat::catch_message(&ctx, &new_message, &self.openai_client, &mut *tokens_used, &mut *chat_memory),
+            airoro_chat::catch_message(&ctx, &new_message, &self.openai_client, &mut *tokens_used, &mut *chat_memory, &self.bot_user_id),
           );
         }
       }

@@ -17,15 +17,15 @@ use async_openai::{
 };
 use crate::airoro_log;
 
-pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &async_openai::Client<OpenAIConfig>, tokens_used: &mut i32, chat_memory: &mut Vec<String>) {
-  let user_name: &String = &message.author.name.to_string();
-  let text = message.content.to_lowercase();
+pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &async_openai::Client<OpenAIConfig>, tokens_used: &mut u32, chat_memory: &mut Vec<String>, bot_user_id: &UserId) {
+  let user_name= &message.author.name.to_string();
+  let message_sanitized = message.content.replace(&format!("<@{}> ", bot_user_id.get()), &format!("{}: ", user_name));
   
-  if message.mentions_user_id(UserId::new(1406309729860321373)) || message.mentions_user_id(UserId::new(1234095682378403840)) {
+  if message.mentions_user_id(*bot_user_id) {
     if *tokens_used <= 1000000 {
       airoro_log!("[AIRORO_CHAT]: Chatbot triggered!!");
 
-      chat_memory.push(message.content.to_string());
+      chat_memory.push(message_sanitized);
 
       if chat_memory.len() > 11 {
         chat_memory.remove(1);
@@ -61,6 +61,7 @@ pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &asy
         .await;
 
       let response = response.unwrap();
+      let response_usage = response.usage.unwrap();
 
       // println!("\nResponse:\n");
       // for choice in &response.choices {
@@ -69,10 +70,7 @@ pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &asy
       //     choice.index, choice.message.role, choice.message.content
       //   );
       // }
-
-      *tokens_used += 512;
-
-      airoro_log!("[AIRORO_CHAT]: Total Tokens Used = {}", tokens_used);
+      *tokens_used += response_usage.total_tokens;
 
       let airoro_msg = response.choices.first().unwrap().message.content.as_deref().unwrap();
 
@@ -84,9 +82,11 @@ pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &asy
         } else if index % 2 != 0 {
           airoro_log!("[AIRORO_CHAT_LOG::USER]: {}", curr_message);
         } else {
-          airoro_log!("[AIRORO_CHAT_LOG]: <SYSTEM_MSG>");
+          airoro_log!("[AIRORO_CHAT_LOG]: <SYSTEM_MSG>\n--------------------");
         }
       }
+
+      airoro_log!("[AIRORO_CHAT_USAGE]:\nPrompt Tokens Used = {}\nCompletion Tokens Used = {}\nTotal Tokens Used = {}\nTotal Tokens Used (Session) = {}", response_usage.completion_tokens, response_usage.prompt_tokens, response_usage.total_tokens, tokens_used);
 
       if let Err(error) = message.reply_ping(&ctx.http, airoro_msg).await {
         airoro_log!("Error sending message: {error:?}");
