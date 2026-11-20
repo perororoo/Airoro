@@ -40,9 +40,10 @@ async fn main() {
   let openai_client = async_openai::Client::new();
   let mut tokens_used = 0; // initialize token count
   airoro_log!("[MAIN::INIT]: Initializing Airoro Chat Memory...");
-  let mut chat_memory = vec![dotenv::var("AIRORO_SYSTEM_MESSAGE").unwrap()];
+  let mut chat_memory = vec![];
   
   let token = Token::from_env("DISCORD_TOKEN").expect("Expected a token in the environment"); // Get bot token from .env
+  let mut total_cost = 0.0;
 
   airoro_log!("[MAIN::LOGIN]: Token loaded successfully !!");
 
@@ -58,7 +59,8 @@ async fn main() {
       database,
       openai_client,
       chat_memory: chat_memory.into(),
-      tokens_used: tokens_used.into()
+      tokens_used: tokens_used.into(),
+      total_cost: total_cost.into(),
     })) // Initialize event handler (see event_handler.rs)
     .await
     .expect("Err creating client"); 
