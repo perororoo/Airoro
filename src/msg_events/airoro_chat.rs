@@ -98,8 +98,9 @@ pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &asy
       let output_tokens_spent = response_usage.output_tokens_details.reasoning_tokens as f32 * 0.0000005;
       let cached_input_tokens_spent = response_usage.input_tokens_details.cached_tokens as f32 * 0.00000001;
       let cached_writes_tokens_spent = response_usage.input_tokens_details.cache_write_tokens.unwrap_or_default() as f32 * 0.000000125;
-      let total_spent_single = input_tokens_spent + output_tokens_spent + cached_input_tokens_spent + cached_writes_tokens_spent;
-
+      // let total_spent_single = input_tokens_spent + output_tokens_spent + cached_input_tokens_spent + cached_writes_tokens_spent;
+      let total_spent_single = response_usage.input_tokens + response_usage.output_tokens;
+      
       *total_cost += total_spent_single as f64;
 
       airoro_log!("[AIRORO_CHAT_USAGE_COST]:\nInput = {} USD\nOutput = {} USD\nCache_write Tokens = {} USD\nCached Input Tokens = {}\nTotal Spent = {} USD\nTotal Spent (Session) = {} USD", input_tokens_spent.round(), output_tokens_spent.round(), cached_writes_tokens_spent.round(), cached_input_tokens_spent.round(), total_spent_single, total_cost);
