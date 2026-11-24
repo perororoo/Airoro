@@ -1,3 +1,4 @@
+use async_openai::types::chat::ReasoningEffort::Low;
 use serde_json::json;
 use serenity::model::channel::Message;
 use serenity::gateway::client::Context;
@@ -56,6 +57,7 @@ pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &asy
 
       let request = CreateResponseArgs::default()
         .model("gpt-6-luna")
+        .reasoning(Low)
         .instructions(system_msg)
         .input(chat_log_to_json(chat_memory).expect("Cannot turn logs into json :<"))
         .store(false) 
@@ -99,7 +101,7 @@ pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &asy
       let cached_input_tokens_spent = response_usage.input_tokens_details.cached_tokens as f32 * 0.00000001;
       let cached_writes_tokens_spent = response_usage.input_tokens_details.cache_write_tokens.unwrap_or_default() as f32 * 0.000000125;
       // let total_spent_single = input_tokens_spent + output_tokens_spent + cached_input_tokens_spent + cached_writes_tokens_spent;
-      let total_spent_single = response_usage.input_tokens + response_usage.output_tokens;
+      let total_spent_single = input_tokens_spent + response_usage.output_tokens as f32 * 0.0000005;
       
       *total_cost += total_spent_single as f64;
 
