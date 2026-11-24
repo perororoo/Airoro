@@ -1,7 +1,6 @@
 
 use std::sync::Arc;
 use std::vec;
-use async_openai::types::chat::ChatCompletionRequestSystemMessage;
 use serenity::model::gateway::GatewayIntents;
 use serenity::secrets::Token;
 use serenity::Client;
@@ -12,7 +11,6 @@ use dotenv::dotenv;
 use utils::init_utils::*;
 use crate::event_handler::Handler;
 use async_openai;
-use std::any::Any;
 use serenity::model::id::UserId;
 
 
@@ -38,12 +36,12 @@ async fn main() {
 
   airoro_log!("[MAIN::INIT]: Creating an OpenAI API instance...");
   let openai_client = async_openai::Client::new();
-  let mut tokens_used = 0; // initialize token count
+  let tokens_used = 0; // initialize token count
   airoro_log!("[MAIN::INIT]: Initializing Airoro Chat Memory...");
-  let mut chat_memory = vec![];
+  let chat_memory = vec![];
   
   let token = Token::from_env("DISCORD_TOKEN").expect("Expected a token in the environment"); // Get bot token from .env
-  let mut total_cost = 0.0;
+  let total_cost = 0.0;
 
   airoro_log!("[MAIN::LOGIN]: Token loaded successfully !!");
 
