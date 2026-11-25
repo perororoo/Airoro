@@ -36,6 +36,7 @@ BOT_USER_ID = Your bot's User ID on Discord
 SQLX_OFFLINE = true
 DATABASE_URL = sqlite:airoro_database.sqlite
 OPENAI_API_KEY = OpenAI API Key
+AIRORO_SYSTEM_MESSAGE = Write a system prompt/main prompt for the chatbot
 ```
 
 ### Cross-compiling for Termux
