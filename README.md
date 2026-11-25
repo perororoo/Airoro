@@ -32,8 +32,10 @@ Run `cargo sqlx database setup`
 
 ```
 DISCORD_TOKEN = Your bot's token
+BOT_USER_ID = Your bot's User ID on Discord
 SQLX_OFFLINE = true
 DATABASE_URL = sqlite:airoro_database.sqlite
+OPENAI_API_KEY = OpenAI API Key
 ```
 
 ### Cross-compiling for Termux
