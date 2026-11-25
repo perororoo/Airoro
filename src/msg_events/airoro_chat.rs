@@ -1,4 +1,4 @@
-use async_openai::types::chat::ReasoningEffort::Low;
+use async_openai::error::OpenAIError;
 use serde_json::json;
 use serenity::model::channel::Message;
 use serenity::gateway::client::Context;
@@ -9,13 +9,14 @@ use crate::utils::msg_utils::builders::{ audio_attachment_builder };
 use async_openai::{
   config::OpenAIConfig,
   types::responses::{
+    CreateResponse,
     CreateResponseArgs,
     InputParam,
     InputItem,
     Tool,
     WebSearchToolArgs,
-    WebSearchToolSearchContextSize,
-  }
+  },
+  types::chat::ReasoningEffort::Low,
 };
 use crate::airoro_log;
 
@@ -34,9 +35,24 @@ fn chat_log_to_json(turns: &[ChatTurn]) -> Result<InputParam, Box<dyn std::error
     Ok(InputParam::Items(items))
 }
 
+fn chat_default(system_msg: &String, chat_memory: &mut Vec<ChatTurn>) ->  Result<CreateResponse, OpenAIError> {
+  let request = CreateResponseArgs::default()
+    .model("gpt-6-luna")
+    .reasoning(Low)
+    .instructions(system_msg)
+    .input(chat_log_to_json(chat_memory).expect("Cannot turn logs into json :<"))
+    .store(false) 
+    .max_output_tokens(512u32)
+    .tools(vec![Tool::WebSearch(WebSearchToolArgs::default().build().expect("WebSearch failed!! D:"))])
+    .build();
+  
+  return request;
+}
+
 pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &async_openai::Client<OpenAIConfig>, tokens_used: &mut u32, chat_memory: &mut Vec<ChatTurn>, bot_user_id: &UserId, total_cost: &mut f64) {
   let user_name= &message.author.name.to_string();
-  let message_sanitized = message.content.replace(&format!("<@{}> ", bot_user_id.get()), &format!("{}: ", user_name));
+  let mut message_sanitized = message.content.replace(&format!("<@{}> ", bot_user_id.get()), "");
+  message_sanitized.insert_str(0, &format!("{}: ", user_name));
   
   if message.mentions_user_id(*bot_user_id) {
     if *tokens_used <= 1000000 {
@@ -55,16 +71,7 @@ pub async fn catch_message(ctx: &Context, message: &Message, openai_client: &asy
 
       let system_msg = dotenv::var("AIRORO_SYSTEM_MESSAGE").unwrap();
 
-      let request = CreateResponseArgs::default()
-        .model("gpt-6-luna")
-        .reasoning(Low)
-        .instructions(system_msg)
-        .input(chat_log_to_json(chat_memory).expect("Cannot turn logs into json :<"))
-        .store(false) 
-        .max_output_tokens(512u32)
-        .tools(vec![Tool::WebSearch(WebSearchToolArgs::default().build().expect("WebSearch failed!! D:"))])
-        .build()
-        .expect("Request building failed!! D:");
+      let request = chat_default(&system_msg, chat_memory).expect("Request building failed!! D:");
 
       let response = openai_client.responses().create(request).await.expect("Could not get a response!! TvT");
 
